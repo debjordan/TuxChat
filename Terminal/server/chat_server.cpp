@@ -10,23 +10,33 @@
 #include <unistd.h>
 #include "config.h"
 #include <string.h>
+#include <ctime>
 
 std::vector<int> clients;
 std::mutex clients_mutex;
 std::ofstream logFile("chat.log", std::ios::app);
 
+std::string getTimestamp()
+{
+    std::time_t now = std::time(nullptr);
+    char buffer[20];
+    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+    return std::string(buffer);
+}
+
 void broadcastMessage(const std::string &message, int sender_fd)
 {
     std::lock_guard<std::mutex> lock(clients_mutex);
 
-    logFile << message << std::endl; // Salva no histórico
+    std::string formattedMessage = getTimestamp() + " " + message;
+    logFile << formattedMessage << std::endl; // Salva no histórico
     logFile.flush();
 
     for (int client_fd : clients)
     {
         if (client_fd != sender_fd)
         {
-            send(client_fd, message.c_str(), message.size(), 0);
+            send(client_fd, formattedMessage.c_str(), formattedMessage.size(), 0);
         }
     }
 }
@@ -37,8 +47,9 @@ void handleClient(int client_fd)
     memset(buffer, 0, sizeof(buffer));
     recv(client_fd, buffer, sizeof(buffer) - 1, 0);
     std::string username(buffer);
+    std::transform(username.begin(), username.end(), username.begin(), ::toupper);
 
-    std::string joinMessage = username + " entrou no chat.";
+    std::string joinMessage = "[" + username + "]: entrou no chat.";
     broadcastMessage(joinMessage, -1);
 
     while (true)
@@ -49,10 +60,11 @@ void handleClient(int client_fd)
             break;
 
         std::string message = std::string(buffer);
-        broadcastMessage(message, client_fd);
+        std::string formattedMessage = "[" + username + "]: " + message;
+        broadcastMessage(formattedMessage, client_fd);
     }
 
-    std::string leaveMessage = username + " saiu do chat.";
+    std::string leaveMessage = "[" + username + "]: saiu do chat.";
     broadcastMessage(leaveMessage, -1);
 
     close(client_fd);

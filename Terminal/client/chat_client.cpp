@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include "config.h"
 #include <string.h>
+#include <algorithm>
 
 std::string username;
 
@@ -39,9 +40,11 @@ int main()
 
     std::cout << "Digite seu nome de usuário: ";
     std::getline(std::cin, username);
+    std::transform(username.begin(), username.end(), username.begin(), ::toupper);
+
     send(sock, username.c_str(), username.size(), 0);
 
-    std::cout << "Conectado ao chat como " << username << "!" << std::endl;
+    std::cout << "Conectado ao chat como [" << username << "]!" << std::endl;
 
     std::thread(receiveMessages, sock).detach();
 
@@ -49,8 +52,8 @@ int main()
     while (true)
     {
         std::getline(std::cin, message);
-        std::string fullMessage = username + ": " + message;
-        send(sock, fullMessage.c_str(), fullMessage.size(), 0);
+        std::string fullMessage = "[" + username + "]: " + message;
+        send(sock, message.c_str(), message.size(), 0);
     }
 
     close(sock);
