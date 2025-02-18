@@ -1,1 +1,0 @@
-/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/ChatServer.dir/link.d CMakeFiles/ChatServer.dir/ChatServer_autogen/mocs_compilation.cpp.o CMakeFiles/ChatServer.dir/main.cpp.o CMakeFiles/ChatServer.dir/tcpserver.cpp.o -o ChatServer  /usr/lib/libQt5Network.so.5.15.16 /usr/lib/libQt5Core.so.5.15.16
