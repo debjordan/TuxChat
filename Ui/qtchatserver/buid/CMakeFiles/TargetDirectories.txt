@@ -1,0 +1,5 @@
+/home/jordan/projects/TuxChat/Ui/qtchatserver/buid/CMakeFiles/ChatServer.dir
+/home/jordan/projects/TuxChat/Ui/qtchatserver/buid/CMakeFiles/edit_cache.dir
+/home/jordan/projects/TuxChat/Ui/qtchatserver/buid/CMakeFiles/rebuild_cache.dir
+/home/jordan/projects/TuxChat/Ui/qtchatserver/buid/CMakeFiles/ChatServer_autogen_timestamp_deps.dir
+/home/jordan/projects/TuxChat/Ui/qtchatserver/buid/CMakeFiles/ChatServer_autogen.dir

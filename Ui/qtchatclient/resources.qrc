@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <!-- Adicione outros arquivos QML aqui -->
+    </qresource>
+</RCC>
